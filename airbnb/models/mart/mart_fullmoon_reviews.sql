@@ -1,0 +1,28 @@
+{{
+    config
+    (
+        materialized = 'incremental',
+        incremental_strategy = 'microbatch',
+        event_time = 'review_date',
+        begin = '2009-06-20',
+        batch_size = 'year',
+        full_refresh = false,
+        tags = ['fact'],
+        schema = 'mart'
+    )
+}}
+WITH FCT_REVIEWS AS 
+(
+    SELECT * FROM {{ref('fct_reviews')}}
+),
+FULL_MOON_DATES AS
+(
+    SELECT * FROM {{ref('seed_full_moon_dates')}}
+)
+SELECT 
+    FR.*,
+    CASE WHEN FMD.FULL_MOON_DATE IS NULL THEN 'NOT FULL MOON'
+    ELSE 'FULL MOON'
+    END AS IS_FULL_MOON
+FROM FCT_REVIEWS FR
+LEFT JOIN FULL_MOON_DATES FMD ON (TO_DATE(FR.REVIEW_DATE) = DATEADD(DAY,1,FMD.FULL_MOON_DATE))
