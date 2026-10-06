@@ -23,7 +23,7 @@ jobs:
       - name: Write private key to file
         env:
           PRIVATE_KEY_CONTENT: "${{ secrets.PRIVATE_KEY }}"
-        run: echo "$PRIVATE_KEY_CONTENT" > "${{ github.workspace }}/private_key.p8"
+        run: echo "$PRIVATE_KEY_CONTENT" | sed 's/\\n/\n/g' > "${{ github.workspace }}/private_key.p8"
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
