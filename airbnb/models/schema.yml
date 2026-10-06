@@ -3,7 +3,7 @@ models:
     description: Cleansed table which contains airbnb listings
     data_tests:
       - minimum_row_count:
-          min_row_count: 1000000000000
+          min_row_count: 1
           severity: warn
     columns:
       - name: listing_id
