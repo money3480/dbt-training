@@ -5,6 +5,11 @@
 name: 'airbnb'
 version: '1.0.0'
 
+flags:
+  warn_error_options:
+    silence:
+      - MissingArgumentsPropertyInGenericTestDeprecation
+
 # This setting configures which "profile" dbt uses for this project.
 profile: 'airbnb'
 
